@@ -1,2 +1,2 @@
 # api-manager-and-test
-An api manager
+An api manager using Fastify, Vite, MariaDB on Docker.
