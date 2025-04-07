@@ -3,7 +3,7 @@ import fastify from 'fastify';
 const server = fastify({logger: true});;
 
 server.get('/healthcheck', async (request, reply) => {
-    return { status: 'OK' };
+    return { status: 'OKAY' };
 });
 
 server.listen({ port: 3000 }, (err, address) => {
