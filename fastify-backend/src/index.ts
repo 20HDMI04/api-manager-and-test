@@ -10,6 +10,10 @@ server.get('/hello', async (request, reply) => {
     return { message: 'Hello, world!' };
 });
 
+server.get('/goodbye', async (request, reply) => {
+    return { message: 'Goodbye, world!' };
+});
+
 server.listen({ port: 3000 }, (err, address) => {
     if (err) {
         server.log.error(err);
