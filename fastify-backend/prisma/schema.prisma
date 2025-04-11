@@ -9,6 +9,16 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Book {
+  id          Int      @id @default(autoincrement())
+  title       String
+  author      String
+  description String   @db.LongText
+  published   Int      @db.Year
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
