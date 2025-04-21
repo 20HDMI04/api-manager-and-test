@@ -2,8 +2,14 @@ import fastify from 'fastify';
 import { prisma } from './utils/prisma';
 import { bookSchema } from './modules/books/book.schema';
 import bookRoutes from './modules/books/book.route';
+import '@fastify/cors'
 
 const server = fastify({logger: true});;
+server.register(require('@fastify/cors'), {
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+});
 
 server.get('/healthcheck', async (request, reply) => {
     return { status: 'OK' };
