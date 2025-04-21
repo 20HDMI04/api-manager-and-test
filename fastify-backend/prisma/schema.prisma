@@ -18,7 +18,8 @@ model Book {
   title       String
   author      String
   description String   @db.LongText
-  published   Int      @db.Year
+  published   DateTime
+  cover       String   @db.LongText
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

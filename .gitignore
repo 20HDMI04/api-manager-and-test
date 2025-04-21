@@ -32,3 +32,4 @@ db-data/
 *.env
 
 react-frontend/
+books.sql

@@ -14,11 +14,17 @@ const bookCore = {
         required_error: "Author is required",
         invalid_type_error: "Author must be a string"
     }),
-    published: z.number(
-        {
-            invalid_type_error: "Published must be a number"
-        }
-    )
+    published: z.string({
+        required_error: "Published date is required",
+        invalid_type_error: "Published date must be a string"
+    }).refine((date) => !isNaN(Date.parse(date)), {
+        message: "Published date must be a valid date",
+    }),
+    cover: z.string({
+        required_error: "Cover is required",
+        invalid_type_error: "Cover must be a string"
+    }).trim().min(1, { message: "Cover is required!" })
+    .url({ message: "Cover must be a valid URL" })
 }
 
 const createBookSchema = z.object({
@@ -39,11 +45,18 @@ const getBookListQuerySchema = z.object({
     size: z.string().optional(),
 }).strict()
 
+const getMainContentBooksSchema = z.object({
+    latestBooks: z.array(bookResponseSchema),
+    classicBooks: z.array(bookResponseSchema),
+    bestBooks: z.array(bookResponseSchema)
+}).strict()
+
 export const {schemas: bookSchema, $ref} = buildJsonSchemas({
     createBookSchema,
     bookResponseSchema,
     getBookListSchema,
-    getBookListQuerySchema
+    getBookListQuerySchema,
+    getMainContentBooksSchema
 }, {$id: "bookSchemas"})
 
 export type CreateBookInput = z.infer<typeof createBookSchema>;
