@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { getBooksHandler, createBookHandler, getQueryBooksHandler } from "./book.controller";
+import { getBooksHandler, createBookHandler, getQueryBooksHandler, deleteBookHandler } from "./book.controller";
 import { $ref } from "./book.schema";
 
 export default async function bookRoutes(server: FastifyInstance) {
@@ -38,4 +38,19 @@ export default async function bookRoutes(server: FastifyInstance) {
             }
         }
     }, createBookHandler);
+
+    server.delete('/:id', {
+        schema: {
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'number', description: 'ID of the book to delete' }
+                },
+                required: ['id']
+            },
+            response: {
+                200: $ref('bookResponseSchema')
+            }
+        }
+    }, deleteBookHandler);
 }

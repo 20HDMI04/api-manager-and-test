@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { getBooksService, createBookService, getQueryBooksService } from './book.service';
+import { getBooksService, createBookService, getQueryBooksService, deleteBookService } from './book.service';
 import { queryBookList } from './book.schema';
 
 export async function getBooksHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -27,6 +27,19 @@ export async function createBookHandler(request: FastifyRequest, reply: FastifyR
     try {
         const createdBook = await createBookService(request, reply);
         return reply.status(201).send(createdBook);
+    } catch (e) {
+        return reply.status(500).send({ error: 'Internal Server Error - ' + e });
+    }
+}
+
+export async function deleteBookHandler(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const { id } = request.params as { id: number };
+        const deletedBook = await deleteBookService(request, reply, id);
+        if (!deletedBook) {
+            return reply.status(404).send({ error: 'Book not found' });
+        }
+        return reply.status(200).send(deletedBook);
     } catch (e) {
         return reply.status(500).send({ error: 'Internal Server Error - ' + e });
     }

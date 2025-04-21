@@ -39,3 +39,16 @@ export async function getQueryBooksService(request: FastifyRequest, reply: Fasti
         throw new Error('Error fetching books '+error);
     }
 }
+
+export async function deleteBookService(request: FastifyRequest, reply: FastifyReply, id: number) {
+    try {
+        const book = await prisma.book.delete({
+            where: {
+                id: id
+            }
+        });
+        return book;
+    } catch (error) {
+        throw new Error('Error deleting book '+error);
+    }
+}
