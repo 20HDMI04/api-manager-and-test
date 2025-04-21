@@ -34,12 +34,18 @@ const bookResponseSchema = z.object({
 
 const getBookListSchema = z.array(bookResponseSchema)
 
+const getBookListQuerySchema = z.object({
+    page: z.string(),
+    size: z.string().optional(),
+}).strict()
 
 export const {schemas: bookSchema, $ref} = buildJsonSchemas({
     createBookSchema,
     bookResponseSchema,
-    getBookListSchema
+    getBookListSchema,
+    getBookListQuerySchema
 }, {$id: "bookSchemas"})
 
 export type CreateBookInput = z.infer<typeof createBookSchema>;
 export type BookResponse = z.infer<typeof bookResponseSchema>;
+export type queryBookList = z.infer<typeof getBookListQuerySchema>;

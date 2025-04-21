@@ -7,7 +7,7 @@ export async function getBooksService(request: FastifyRequest, reply: FastifyRep
         const books = await prisma.book.findMany();
         return books;
     } catch (error) {
-        throw new Error('Error fetching books');
+        throw new Error('Error fetching books '+error);
     }
 }
 
@@ -24,6 +24,18 @@ export async function createBookService(request: FastifyRequest, reply: FastifyR
         });
         return book;
     } catch (error) {
-        throw new Error('Error creating book');
+        throw new Error('Error creating book '+error);
+    }
+}
+
+export async function getQueryBooksService(request: FastifyRequest, reply: FastifyReply, page: number, size: number) {
+    try {
+        const books = await prisma.book.findMany({
+            skip: (page - 1) * size,
+            take: size
+        });
+        return books;
+    } catch (error) {
+        throw new Error('Error fetching books '+error);
     }
 }

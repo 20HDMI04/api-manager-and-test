@@ -30,3 +30,5 @@ Thumbs.db
 
 db-data/
 *.env
+
+react-frontend/

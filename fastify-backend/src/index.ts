@@ -13,11 +13,13 @@ async function main(){
     for (const schema of [...bookSchema]) {
         server.addSchema(schema)
       }
-    server.register(bookRoutes, {prefix: 'api/v1/books'});
-    server.register(require('@fastify/swagger'));
-    server.register(require('@fastify/swagger-ui'),{
-      routePrefix: '/documentation',
-    });
+    
+      server.register(require('@fastify/swagger'));
+      server.register(require('@fastify/swagger-ui'),{
+        routePrefix: '/documentation',
+      });
+
+      server.register(bookRoutes, {prefix: 'api/v1/books'});
 
     try{
         server.listen({ port: 3000 }, (err, address) => {
