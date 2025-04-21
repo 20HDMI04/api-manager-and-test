@@ -13,7 +13,7 @@ async function main(){
     for (const schema of [...bookSchema]) {
         server.addSchema(schema)
       }
-    
+     
       server.register(require('@fastify/swagger'));
       server.register(require('@fastify/swagger-ui'),{
         routePrefix: '/documentation',
