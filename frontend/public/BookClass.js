@@ -58,7 +58,7 @@ export class BookStatics{
         }
         this.books.sort((a, b) => a.published - b.published);
     }
-
+    
 }
 
 export class Book {
