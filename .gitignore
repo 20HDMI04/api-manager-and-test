@@ -27,3 +27,9 @@ build/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+db-data/
+*.env
+
+react-frontend/
+books.sql

@@ -1,0 +1,17 @@
+services:
+  db:
+    image: "mariadb:latest"
+    environment:
+      env_file: ".env"
+      DEBUG: "true"
+      MYSQL_ROOT_PASSWORD: ${DBPASSWORD}
+      MYSQL_DATABASE: ${DBNAME}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db-data:/var/lib/mysql

@@ -4,18 +4,29 @@
   "description": "An api manager using Fastify, Vite, MariaDB on Docker.",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "reset": "prisma db push --force-reset"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/swagger": "^8.15.0",
+    "@fastify/swagger-ui": "^4.2.0",
     "@prisma/client": "^6.5.0",
-    "fastify": "^5.2.2"
+    "fastify": "^4.15.0",
+    "fastify-cors": "^6.1.0",
+    "fastify-zod": "^1.4.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^22.13.1",
+    "@types/node": "^22.14.1",
     "prisma": "^6.3.1",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   }
 }

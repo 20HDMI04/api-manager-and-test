@@ -1,23 +1,45 @@
 import fastify from 'fastify';
+import { prisma } from './utils/prisma';
+import { bookSchema } from './modules/books/book.schema';
+import bookRoutes from './modules/books/book.route';
+import '@fastify/cors'
 
 const server = fastify({logger: true});;
+server.register(require('@fastify/cors'), {
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+});
 
 server.get('/healthcheck', async (request, reply) => {
-    return { status: 'OKAY' };
+    return { status: 'OK' };
 });
 
-server.get('/hello', async (request, reply) => {
-    return { message: 'Hello, world!' };
-});
+async function main(){
+    for (const schema of [...bookSchema]) {
+        server.addSchema(schema)
+      }
+     
+      server.register(require('@fastify/swagger'));
+      server.register(require('@fastify/swagger-ui'),{
+        routePrefix: '/documentation',
+      });
 
-server.get('/goodbye', async (request, reply) => {
-    return { message: 'Goodbye, world!' };
-});
+      server.register(bookRoutes, {prefix: 'api/v1/books'});
 
-server.listen({ port: 3000 }, (err, address) => {
-    if (err) {
-        server.log.error(err);
+    try{
+        server.listen({ port: 3000 }, (err, address) => {
+            if (err) {
+                server.log.error(err);
+                process.exit(1);
+            }
+            server.log.info(`Server listening at ${address}`);
+        }); 
+    }catch (error) {
+        server.log.error(error);
         process.exit(1);
-    }
-    server.log.info(`Server listening at ${address}`);
-});
+    }    
+}
+
+main();
+
