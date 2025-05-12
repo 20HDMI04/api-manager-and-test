@@ -51,14 +51,42 @@ const getMainContentBooksSchema = z.object({
     bestBooks: z.array(bookResponseSchema)
 }).strict()
 
+const updateBooksSchema = z.object({
+    id: z.number(),
+    title: z.string({
+        required_error: "Title is required",
+        invalid_type_error: "Title must be a string"
+    }).trim().min(1, { message: "Title is required!" }).optional(),    
+    description: z.string({
+        required_error: "Description is required",
+        invalid_type_error: "Description must be a string"
+    }).trim().min(1, { message: "Description is required!" }).optional(),
+    author: z.string({
+        required_error: "Author is required",
+        invalid_type_error: "Author must be a string"
+    }).optional(),
+    published: z.string({
+        required_error: "Published date is required",
+        invalid_type_error: "Published date must be a string"
+    }).refine((date) => !isNaN(Date.parse(date)), {
+        message: "Published date must be a valid date",
+    }).optional(),
+    cover: z.string({
+        required_error: "Cover is required",
+        invalid_type_error: "Cover must be a string"
+    }).url({ message: "Cover must be a valid URL" }).optional()
+}).strict()
+
 export const {schemas: bookSchema, $ref} = buildJsonSchemas({
     createBookSchema,
     bookResponseSchema,
     getBookListSchema,
     getBookListQuerySchema,
-    getMainContentBooksSchema
+    getMainContentBooksSchema,
+    updateBooksSchema
 }, {$id: "bookSchemas"})
 
 export type CreateBookInput = z.infer<typeof createBookSchema>;
 export type BookResponse = z.infer<typeof bookResponseSchema>;
 export type queryBookList = z.infer<typeof getBookListQuerySchema>;
+export type updateBookService = z.infer<typeof updateBooksSchema>;

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../utils/prisma';
-import { CreateBookInput } from './book.schema';
+import { CreateBookInput, updateBookService } from './book.schema';
 
 export async function getBooksService(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -101,5 +101,22 @@ export async function deleteBookService(request: FastifyRequest, reply: FastifyR
         return book;
     } catch (error) {
         throw new Error('Error deleting book '+error);
+    }
+}
+
+export async function updateBookService(id: number, input: updateBookService) {
+    try {
+        const book = await prisma.book.update({
+            where: {
+                id: id
+            },
+            data: {
+                ...input,
+        }})
+        
+        return book;
+        }
+    catch (error) {
+        throw new Error('Error updating book '+error);
     }
 }

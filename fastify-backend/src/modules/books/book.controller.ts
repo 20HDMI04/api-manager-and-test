@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { getBooksService, createBookService, getQueryBooksService, deleteBookService, getMainContentService_Latest, getMainContentService_Classic, getMainContentService_Best } from './book.service';
+import { getBooksService, createBookService, getQueryBooksService, deleteBookService, getMainContentService_Latest, getMainContentService_Classic, getMainContentService_Best, updateBookService } from './book.service';
 import { queryBookList } from './book.schema';
 
 export async function getBooksHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -69,6 +69,27 @@ export async function deleteBookHandler(request: FastifyRequest, reply: FastifyR
             return reply.status(404).send({ error: 'Book not found' });
         }
         return reply.status(200).send(deletedBook);
+    } catch (e) {
+        return reply.status(500).send({ error: 'Internal Server Error - ' + e });
+    }
+}
+
+export async function updateBookHandler(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const input = request.body as {
+            id: number;
+            title?: string;
+            description?: string;
+            author?: string;
+            published?: string;
+            cover?: string;
+        };
+        const { id } = request.params as { id: number };
+        const updatedBook = await updateBookService(id, input);
+        if (!updatedBook) {
+            return reply.status(404).send({ error: 'Book not found' });
+        }
+        return reply.status(200).send(updatedBook);
     } catch (e) {
         return reply.status(500).send({ error: 'Internal Server Error - ' + e });
     }
