@@ -5,27 +5,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vite App</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="header.css" />
+  <link rel="stylesheet" href="BookList.css" />
 </head>
 
-<header id="header">
-  <div class="header-container">
-    <div class="logo">📚 Könyvtár</div>
-    <!-- <nav class="nav-links"> (ha akarunk menüt)
+<body>
+  <header id="header">
+    <div class="header-container">
+      <div class="logo">📚 Könyvtár</div>
+      <!-- <nav class="nav-links"> (ha akarunk menüt)
       <ul>
         <li><a href="#home">Kezdőlap</a></li>
         <li><a href="#books">Könyvek</a></li>
         <li><a href="#about">Rólunk</a></li>
       </ul>
     </nav> -->
-    <div class="header-actions">
-      <input type="text" placeholder="Keresés…" aria-label="Keresés a könyvek között">
-      <button>🔍</button>
+      <div class="header-actions">
+        <input type="text" id="search" placeholder="Keresés…" aria-label="Keresés a könyvek között">
+        <button>🔍</button>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<body>
   <div class="book-list"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
