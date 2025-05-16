@@ -23,17 +23,12 @@ async function loading() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const bookList = document.querySelector('.book-list');
+    const searchInput = document.getElementById('search');
 
-    let store;
-    try {
-        const books = await loading();
-        store = new BookStatics(books);
-        renderBooks(store.books);
-    } catch (err) {
-        bookList.innerHTML = `<p class="error">${err.message}</p>`;
-        console.error(err);
-        return;
-    }
+    
+    const books = await loading();
+    let store = new BookStatics(books);
+    renderBooks(store.books);
 
     function renderBooks(books) {
         bookList.innerHTML = '';
@@ -51,12 +46,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="book-content">
           <h2>${book.title}</h2>
           <p><strong>Szerző:</strong> ${book.author}</p>
-          <p><strong>Megjelenés:</strong> ${new Date(book.published).toLocaleDateString()}</p>
+          <p><strong>Megjelenés:</strong> ${book.published}</p>
           <p class="desc">${book.description}</p>
           <button class="add-to-cart" data-id="${book.id}">🛒 Kosárba</button>
-        </div>
-      `;
+        </div>`;
             bookList.appendChild(card);
+        });
+
+        //cím szerinti keresés
+        searchInput.addEventListener('input', e => {
+            const term = e.target.value.trim();
+            const filtered = term
+                ? store.searchBookByTitle(term)
+                : store.books;
+            renderBooks(filtered);
         });
     }
 });
