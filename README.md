@@ -77,3 +77,10 @@ OR
 **in the /fastify-backend and the /frontend directory**
     npm run dev
 ```
+
+## API documentation
+
+> made by Swagger
+> you can find it here: [http://localhost:3000/documentation](http://localhost:3000/documentation)
+
+you can't watch it without the backend
