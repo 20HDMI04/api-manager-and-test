@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { getBooksHandler, createBookHandler, getQueryBooksHandler, deleteBookHandler, getMainContentHandler, updateBookHandler, getBooksByIdHandler } from "./book.controller";
+import { getBooksHandler, createBookHandler, getQueryBooksHandler, deleteBookHandler, getMainContentHandler, updateBookHandler, getBooksByIdHandler, getQuerySearchBooksHandler } from "./book.controller";
 import { $ref } from "./book.schema";
 import { prisma } from "../../utils/prisma";
 
@@ -54,6 +54,24 @@ export default async function bookRoutes(server: FastifyInstance) {
                 }
             }
         }, getQueryBooksHandler
+    )
+
+    server.get('/query-search/',{
+        schema: {
+                querystring: {
+                    type: 'object',
+                    properties: {
+                        page: { type: 'string', description: 'Page number for pagination' },
+                        size: { type: 'string', description: 'Page size for pagination' },
+                        search: { type: 'string', description: 'Search query' }
+                    },
+                    required: ['page', 'size', 'search']
+                },
+                response: {
+                    200: $ref('getBookListSchema')
+                }
+            }
+        }, getQuerySearchBooksHandler
     )
 
     server.post('/',{

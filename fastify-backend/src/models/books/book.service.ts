@@ -55,6 +55,24 @@ export async function getQueryBooksService(request: FastifyRequest, reply: Fasti
     }
 }
 
+export async function getQueryBooksSearchService(request: FastifyRequest, reply: FastifyReply, page: number, size: number, searchElement: string) {
+    try {
+        const books = await prisma.book.findMany({
+            where:{
+                OR:[
+                    { title: { contains: searchElement } },
+                    {author: { contains: searchElement } },
+                ]
+            },
+            skip: (page - 1) * size,
+            take: size
+        });
+        return books;
+    } catch (error) {
+        throw new Error('Error fetching books '+error);
+    }
+}
+
 export async function getMainContentService_Latest(request: FastifyRequest, reply: FastifyReply) {
     try {
         const books = await prisma.book.findMany({

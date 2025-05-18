@@ -43,6 +43,7 @@ const getBookListSchema = z.array(bookResponseSchema)
 const getBookListQuerySchema = z.object({
     page: z.string(),
     size: z.string().optional(),
+    search: z.string().optional(),
 }).strict()
 
 const getMainContentBooksSchema = z.object({
