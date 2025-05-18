@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { getBooksHandler, createBookHandler, getQueryBooksHandler, deleteBookHandler, getMainContentHandler, updateBookHandler, getBooksByIdHandler } from "./book.controller";
 import { $ref } from "./book.schema";
+import { prisma } from "../../utils/prisma";
 
 export default async function bookRoutes(server: FastifyInstance) {
 
@@ -12,6 +13,15 @@ export default async function bookRoutes(server: FastifyInstance) {
         }
       }, getBooksHandler
     );
+
+    server.get('/maxItem', async(request, reply) => {
+        try {
+            const howmuch = await prisma.book.count()
+            return reply.status(200).send(howmuch);
+        } catch (error) {
+            console.error('Error fetching maxItem:', error);
+        }
+    })
 
     server.get('/:id', {
         schema: {
