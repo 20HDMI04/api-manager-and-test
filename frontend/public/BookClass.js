@@ -62,12 +62,13 @@ export class BookStatics{
 }
 
 export class Book {
-    constructor(id, title, author, description, published, createdAt, updatedAt) {
+    constructor(id, title, author, description, published, cover, createdAt, updatedAt) {
         this.id = parseInt(id);
         this.title = title;
         this.author = author;
         this.description = description;
         this.published = parseInt(published);
+        this.cover = cover;
         this.createdAt = new Date(createdAt);
         this.updatedAt = new Date(updatedAt);
     }
