@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { getBooksService, createBookService, getQueryBooksService, deleteBookService, getMainContentService_Latest, getMainContentService_Classic, getMainContentService_Best, updateBookService } from './book.service';
+import { getBooksService, createBookService, getQueryBooksService, deleteBookService, getMainContentService_Latest,getQueryBooksSearchService, getMainContentService_Classic, getMainContentService_Best, updateBookService, getBooksByIDService } from './book.service';
 import { queryBookList } from './book.schema';
 
 export async function getBooksHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -11,12 +11,38 @@ export async function getBooksHandler(request: FastifyRequest, reply: FastifyRep
    }
 }
 
+export async function getBooksByIdHandler(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const { id } = request.params as { id: number };
+        const gottenBook = await getBooksByIDService(id);
+        if (!gottenBook) {
+            return reply.status(404).send({ error: 'Book not found' });
+        }
+        return reply.status(200).send(gottenBook);
+    } catch (e) {
+        return reply.status(500).send({ error: 'Internal Server Error - ' + e });
+    }
+}
+
 export async function getQueryBooksHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
         const query = request.query as queryBookList;
         const page = parseInt(query.page, 10);
         const size = query.size ? parseInt(query.size, 10) : 10;
         const gottenBooks = await getQueryBooksService(request, reply, page, size);
+        return reply.status(200).send(gottenBooks);
+    } catch (e) {
+        return reply.status(500).send({ error: 'Internal Server Error - ' + e });
+    }
+}
+
+export async function getQuerySearchBooksHandler(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const query = request.query as queryBookList;
+        const page = parseInt(query.page, 10);
+        const size = query.size ? parseInt(query.size, 10) : 10;
+        const search = query.search ? query.search : '';
+        const gottenBooks = await getQueryBooksSearchService(request, reply, page, size, search);
         return reply.status(200).send(gottenBooks);
     } catch (e) {
         return reply.status(500).send({ error: 'Internal Server Error - ' + e });

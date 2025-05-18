@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { getBooksHandler, createBookHandler, getQueryBooksHandler, deleteBookHandler, getMainContentHandler, updateBookHandler } from "./book.controller";
+import { getBooksHandler, createBookHandler, getQueryBooksHandler, deleteBookHandler, getMainContentHandler, updateBookHandler, getBooksByIdHandler, getQuerySearchBooksHandler } from "./book.controller";
 import { $ref } from "./book.schema";
+import { prisma } from "../../utils/prisma";
 
 export default async function bookRoutes(server: FastifyInstance) {
 
@@ -11,6 +12,31 @@ export default async function bookRoutes(server: FastifyInstance) {
             }
         }
       }, getBooksHandler
+    );
+
+    server.get('/maxItem', async(request, reply) => {
+        try {
+            const howmuch = await prisma.book.count()
+            return reply.status(200).send(howmuch);
+        } catch (error) {
+            console.error('Error fetching maxItem:', error);
+        }
+    })
+
+    server.get('/:id', {
+        schema: {
+            params: {
+                type: 'object',
+                properties: {
+                    id: { type: 'number', description: 'ID of the book to retrieve' }
+                },
+                required: ['id']
+            },
+            response: {
+                200: $ref('bookResponseSchema')
+            }
+        }
+        }, getBooksByIdHandler
     );
 
     server.get('/query/',{
@@ -28,6 +54,24 @@ export default async function bookRoutes(server: FastifyInstance) {
                 }
             }
         }, getQueryBooksHandler
+    )
+
+    server.get('/query-search/',{
+        schema: {
+                querystring: {
+                    type: 'object',
+                    properties: {
+                        page: { type: 'string', description: 'Page number for pagination' },
+                        size: { type: 'string', description: 'Page size for pagination' },
+                        search: { type: 'string', description: 'Search query' }
+                    },
+                    required: ['page', 'size', 'search']
+                },
+                response: {
+                    200: $ref('bookResponseListQuerySearchSchema')
+                }
+            }
+        }, getQuerySearchBooksHandler
     )
 
     server.post('/',{

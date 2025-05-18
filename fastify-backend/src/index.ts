@@ -12,7 +12,7 @@ server.register(require('@fastify/cors'), {
 });
 
 server.get('/healthcheck', async (request, reply) => {
-    return { status: 'OK' };
+    return { status: 'OK', message: 'Server is running' };
 });
 
 async function main(){
