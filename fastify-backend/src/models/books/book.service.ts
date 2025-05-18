@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../utils/prisma';
-import { CreateBookInput, updateBookService } from './book.schema';
+import { BookResponseListQuerySearch, CreateBookInput, updateBookService } from './book.schema';
 
 export async function getBooksService(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -55,19 +55,36 @@ export async function getQueryBooksService(request: FastifyRequest, reply: Fasti
     }
 }
 
-export async function getQueryBooksSearchService(request: FastifyRequest, reply: FastifyReply, page: number, size: number, searchElement: string) {
+export async function getQueryBooksSearchService(request: FastifyRequest, reply: FastifyReply, page: number, size: number, searchElement: string): Promise<BookResponseListQuerySearch> {
     try {
         const books = await prisma.book.findMany({
             where:{
                 OR:[
                     { title: { contains: searchElement } },
-                    {author: { contains: searchElement } },
+                    { author: { contains: searchElement } },
                 ]
             },
             skip: (page - 1) * size,
             take: size
         });
-        return books;
+        const count = await prisma.book.count({
+            where:{
+                OR:[
+                    { title: { contains: searchElement } },
+                    { author: { contains: searchElement } },
+                ]
+            }
+        });
+        const booksWithStringDates = books.map(book => ({
+            ...book,
+            published: book.published.toISOString(),
+            createdAt: book.createdAt.toISOString(),
+            updatedAt: book.updatedAt.toISOString(),
+        }));
+        return {
+            bookArray: booksWithStringDates,
+            allPages: Math.ceil(count / size)
+        };
     } catch (error) {
         throw new Error('Error fetching books '+error);
     }

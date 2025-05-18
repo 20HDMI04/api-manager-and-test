@@ -68,7 +68,7 @@ export default async function bookRoutes(server: FastifyInstance) {
                     required: ['page', 'size', 'search']
                 },
                 response: {
-                    200: $ref('getBookListSchema')
+                    200: $ref('bookResponseListQuerySearchSchema')
                 }
             }
         }, getQuerySearchBooksHandler
