@@ -11,6 +11,19 @@ export async function getBooksService(request: FastifyRequest, reply: FastifyRep
     }
 }
 
+export async function getBooksByIDService(id: number) {
+    try {
+        const book = await prisma.book.findUnique({
+            where: {
+                id: id
+            }
+        });
+        return book;
+    } catch (error) {
+        throw new Error('Error fetching book by ID '+error);
+    }
+}
+
 export async function createBookService(request: FastifyRequest, reply: FastifyReply) {
     const body = request.body as CreateBookInput;
     const publishedDate = new Date(body.published);
