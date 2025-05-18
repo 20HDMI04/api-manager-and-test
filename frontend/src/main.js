@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const bookList = document.querySelector('.book-list');
     const searchInput = document.getElementById('search');
 
-    
+
     const books = await loading();
     let store = new BookStatics(books);
     renderBooks(store.books);
@@ -47,11 +47,38 @@ document.addEventListener('DOMContentLoaded', async () => {
           <h2>${book.title}</h2>
           <p><strong>Szerző:</strong> ${book.author}</p>
           <p><strong>Megjelenés:</strong> ${book.published}</p>
-          <p class="desc">${book.description}</p>
+
+          <button class="openDescription">Leírás</button>
+
+        <div class="description">
+            <div class="description-inner">
+                <h2>Leírás</h2>
+                <p class="desc">${book.description}</p>
+                <button class="closeDescription">Bezárás</button>
+            </div>
+        </div><br>
           <button class="add-to-cart" data-id="${book.id}">🛒 Kosárba</button>
         </div>`;
             bookList.appendChild(card);
         });
+
+        
+        bookList.addEventListener('click', e => {
+            const card = e.target.closest('.book-item');
+            if (!card) return;
+
+            
+            if (e.target.matches('.openDescription')) {
+                card.querySelector('.description').classList.add('open');
+            }
+
+            
+            if (e.target.matches('.closeDescription')) {
+                card.querySelector('.description').classList.remove('open');
+            }
+            
+        });
+
 
         //cím szerinti keresés
         searchInput.addEventListener('input', e => {
