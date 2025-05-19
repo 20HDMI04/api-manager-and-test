@@ -1,7 +1,7 @@
 import fastify from 'fastify';
 import { prisma } from './utils/prisma';
-import { bookSchema } from './modules/books/book.schema';
-import bookRoutes from './modules/books/book.route';
+import { bookSchema } from './models/books/book.schema';
+import bookRoutes from './models/books/book.route';
 import '@fastify/cors'
 
 const server = fastify({logger: true});;
@@ -12,7 +12,7 @@ server.register(require('@fastify/cors'), {
 });
 
 server.get('/healthcheck', async (request, reply) => {
-    return { status: 'OK' };
+    return { status: 'OK', message: 'Server is running' };
 });
 
 async function main(){

@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+    --color-creamy: #F1EDE6;
+    --color-borderSearch: #877d7a;
+    --color-backSearch: #F4F4F4;
+    --color-searchIcon: #D7B26D;
+    --color-fontBold: #2b1f1c;
+    --color-fontLighter: #6E5951;
+    --color-creamySecondary: #FAF6F2;
+    --color-Prev-Next: #DFD0B1;
+    --color-Icon: #706450;
+}
+
+
+.playfair-display-700 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: bold;
+}
+
+.playfair-display-400 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+ 
+
+.playfair-display-sc-regular {
+    font-family: "Playfair Display SC", serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+.carousel-control-next, .carousel-control-prev {
+    width: 7%;
+}
+a {
+    text-decoration: none !important;
+    color: var(--color-fontBold) !important;
+}
+
+a:hover {
+    text-decoration: none !important;
+    color: var(--color-fontLighter) !important;
+}
+
+#root > div > div:nth-child(1) > div.h-\[15vh\].flex.items-center.justify-between.px-4 > div:nth-child(3) > button:nth-child(3) > svg:hover{
+    fill: var(--color-fontLighter) !important;
+}

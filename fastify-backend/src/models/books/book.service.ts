@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../utils/prisma';
-import { CreateBookInput } from './book.schema';
+import { BookResponseListQuerySearch, CreateBookInput, updateBookService } from './book.schema';
 
 export async function getBooksService(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -8,6 +8,19 @@ export async function getBooksService(request: FastifyRequest, reply: FastifyRep
         return books;
     } catch (error) {
         throw new Error('Error fetching books '+error);
+    }
+}
+
+export async function getBooksByIDService(id: number) {
+    try {
+        const book = await prisma.book.findUnique({
+            where: {
+                id: id
+            }
+        });
+        return book;
+    } catch (error) {
+        throw new Error('Error fetching book by ID '+error);
     }
 }
 
@@ -37,6 +50,41 @@ export async function getQueryBooksService(request: FastifyRequest, reply: Fasti
             take: size
         });
         return books;
+    } catch (error) {
+        throw new Error('Error fetching books '+error);
+    }
+}
+
+export async function getQueryBooksSearchService(request: FastifyRequest, reply: FastifyReply, page: number, size: number, searchElement: string): Promise<BookResponseListQuerySearch> {
+    try {
+        const books = await prisma.book.findMany({
+            where:{
+                OR:[
+                    { title: { contains: searchElement } },
+                    { author: { contains: searchElement } },
+                ]
+            },
+            skip: (page - 1) * size,
+            take: size
+        });
+        const count = await prisma.book.count({
+            where:{
+                OR:[
+                    { title: { contains: searchElement } },
+                    { author: { contains: searchElement } },
+                ]
+            }
+        });
+        const booksWithStringDates = books.map(book => ({
+            ...book,
+            published: book.published.toISOString(),
+            createdAt: book.createdAt.toISOString(),
+            updatedAt: book.updatedAt.toISOString(),
+        }));
+        return {
+            bookArray: booksWithStringDates,
+            allPages: Math.ceil(count / size)
+        };
     } catch (error) {
         throw new Error('Error fetching books '+error);
     }
@@ -101,5 +149,22 @@ export async function deleteBookService(request: FastifyRequest, reply: FastifyR
         return book;
     } catch (error) {
         throw new Error('Error deleting book '+error);
+    }
+}
+
+export async function updateBookService(id: number, input: updateBookService) {
+    try {
+        const book = await prisma.book.update({
+            where: {
+                id: id
+            },
+            data: {
+                ...input,
+        }})
+        
+        return book;
+        }
+    catch (error) {
+        throw new Error('Error updating book '+error);
     }
 }
