@@ -28,7 +28,7 @@ function Nav({list}: NavProps) {
             <div className="h-[5vh] my-2 flex px-5">
                     <a href="/" className="pt-1 playfair-display-sc-regular">Home</a>
                     <p className='mx-3 playfair-display-700 text-[var(--color-fontBold)] text-2xl'>|</p>
-                    <a href="#" className="pt-1 playfair-display-sc-regular">About</a>
+                    <a href="/about" className="pt-1 playfair-display-sc-regular">About</a>
                     <p className='mx-3 playfair-display-700 text-[var(--color-fontBold)] text-2xl'>|</p>
                     <a href="/book-data-page/1" className="pt-1 playfair-display-sc-regular">Books</a>
             </div>
