@@ -98,4 +98,9 @@ OR
 
 you can't watch it without the backend
 
+## Contributors
+- [Tóth Péter](https://github.com/Twixy01)
+- [Yamakawa Kende](https://github.com/Kende28)
+- [Balogh János Péter](https://github.com/20HDMI04)
+
 [^1]: not tested so it might not work (it is for the sake of understanding the backend)
