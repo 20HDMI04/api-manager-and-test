@@ -1,9 +1,9 @@
-#modify-book{
+.modify-book{
   background-color: green;
     color: white;
     padding: 4px;
 }
-#delete-book{
+.delete-book{
   background-color: red;
     color: white;
     padding: 4px;

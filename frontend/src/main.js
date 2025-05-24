@@ -1,6 +1,9 @@
 import { Book, BookStatics } from '/public/BookClass.js';
 
 const url = 'http://127.0.0.1:3000/api/v1/books/';
+const bookList = document.querySelector('.book-list');
+const searchInput = document.getElementById('search');
+let store;
 
 async function loading() {
     const response = await fetch(url, {
@@ -21,25 +24,16 @@ async function loading() {
     ));
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const bookList = document.querySelector('.book-list');
-    const searchInput = document.getElementById('search');
-
-
-    const books = await loading();
-    let store = new BookStatics(books);
-    renderBooks(store.books);
-
-    function renderBooks(books) {
-        bookList.innerHTML = '';
-        if (books.length === 0) {
-            bookList.innerHTML = '<p>Nincs találat.</p>';
-            return;
-        }
-        books.forEach(book => {
-            const card = document.createElement('div');
-            card.className = 'book-item';
-            card.innerHTML = `
+function renderBooks(books) {
+    bookList.innerHTML = '';
+    if (books.length === 0) {
+        bookList.innerHTML = '<p>Nincs találat.</p>';
+        return;
+    }
+    books.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'book-item';
+        card.innerHTML = `
         <div class="book-image">
           <img src="${book.cover}" alt="${book.title}">
         </div>
@@ -58,37 +52,48 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         </div><br>
         <div>
-            <button id="modify-book" data-id="${book.id}">Módosít</button>
-            <button id="delete-book" data-id="${book.id}">Törlés</button>
-        </div>`;
-            bookList.appendChild(card);
-        });
-
-        
-        bookList.addEventListener('click', e => {
-            const card = e.target.closest('.book-item');
-            if (!card) return;
-
-            
-            if (e.target.matches('.openDescription')) {
-                card.querySelector('.description').classList.add('open');
-            }
-
-            
-            if (e.target.matches('.closeDescription')) {
-                card.querySelector('.description').classList.remove('open');
-            }
-            
-        });
+            <button class="modify-book" data-id="${book.id}">Módosít</button>
+            <button class="delete-book" data-id="${book.id}">Törlés</button>
+        </div>`
 
 
-        //cím szerinti keresés
-        searchInput.addEventListener('input', e => {
-            const term = e.target.value.trim();
-            const filtered = term
-                ? store.searchBookByTitle(term)
-                : store.books;
-            renderBooks(filtered);
-        });
+        bookList.appendChild(card);
+
+    });
+}
+
+async function init() {
+    const books = await loading();
+    store = new BookStatics(books);
+    renderBooks(store.books);
+    
+    //cím szerinti keresés
+    searchInput.addEventListener('input', searchByTitle);
+    
+    bookList.addEventListener('click', popUpWindow);;
+}
+
+function searchByTitle(e) {
+    const term = e.target.value.trim();
+    const filtered = term
+        ? store.searchBookByTitle(term)
+        : store.books;
+    renderBooks(filtered);
+}
+
+function popUpWindow(e) {
+    const card = e.target.closest('.book-item');
+    if (!card) return;
+
+
+    if (e.target.matches('.openDescription')) {
+        card.querySelector('.description').classList.add('open');
     }
-});
+
+
+    if (e.target.matches('.closeDescription')) {
+        card.querySelector('.description').classList.remove('open');
+    }
+
+}
+document.addEventListener('DOMContentLoaded', init)
