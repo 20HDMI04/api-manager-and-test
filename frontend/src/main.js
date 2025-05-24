@@ -70,6 +70,10 @@ async function init() {
     //cím szerinti keresés
     searchInput.addEventListener('input', searchByTitle);
     
+    
+    bookList.addEventListener('click', deleteBook);
+    
+    
     bookList.addEventListener('click', popUpWindow);;
 }
 
@@ -79,6 +83,20 @@ function searchByTitle(e) {
         ? store.searchBookByTitle(term)
         : store.books;
     renderBooks(filtered);
+}
+
+async function deleteBook(e) {
+    if (!e.target.matches('.delete-book')) return;
+    let deleteId = e.target.getAttribute("data-id");
+    const response = await fetch(url + deleteId, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    });
+    if (!response.ok) {
+        alert("Hiba történt...");
+        return;
+    }
+    renderBooks(await loading());
 }
 
 function popUpWindow(e) {
