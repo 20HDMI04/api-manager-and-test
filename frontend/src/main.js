@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <button class="closeDescription">Bezárás</button>
             </div>
         </div><br>
-          <button class="add-to-cart" data-id="${book.id}">🛒 Kosárba</button>
+        <div>
+            <button id="modify-book" data-id="${book.id}">Módosít</button>
+            <button id="delete-book" data-id="${book.id}">Törlés</button>
         </div>`;
             bookList.appendChild(card);
         });
