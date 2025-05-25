@@ -1,4 +1,15 @@
-.description{
+.openModification{
+  background-color: green;
+    color: white;
+    padding: 4px;
+}
+.delete-book{
+  background-color: red;
+    color: white;
+    padding: 4px;
+}
+/* Módosítás popup*/
+.modification{
     opacity: 0;
     position: fixed;
     top: 0;
@@ -11,11 +22,11 @@
     align-items: center;
     justify-content: center;
 }
-.description.open{
+.modification.open{
     opacity: 1;
     z-index: 999;
 }
-.description-inner{
+.modification-inner{
     background: white;
     border: 4px solid black;
     border-radius: 5px;
@@ -24,10 +35,10 @@
     width: 450px;
     color: black;
 }
-.description-inner h2{
+.modification-inner h2{
     margin: 0;
 }
-.description-inner p{
-    margin: 10px 0;
+.modification-inner p, label, input{
+    margin: 20px 0;
     line-height: 24px;
 }
