@@ -16,13 +16,13 @@
     z-index: 999;
 }
 .description-inner{
-    background: linear-gradient(135deg, #4a90e2 0%, #9013fe 100%);
+    background: white;
     border: 4px solid black;
     border-radius: 5px;
     padding: 15px 25px;
     text-align: left;
     width: 450px;
-    color: white;
+    color: black;
 }
 .description-inner h2{
     margin: 0;
